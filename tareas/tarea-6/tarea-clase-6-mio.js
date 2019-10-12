@@ -6,14 +6,14 @@ Al hacer click en "calcular", mostrar en un elemento pre-existente la mayor edad
 Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuevamente, borrando los inputs ya creados (investigar cómo en MDN).
 */
 
-const cantidadFamiliares = prompt("Cuantos miembros tiene la familia?");
-const $calcular = document.querySelector("#calcular");
+
+const $calcularEdades = document.querySelector("#calcular-edades");
 const infoEdades = document.querySelector("#info-edades");
 const $resetear = document.querySelector("#resetear");
+const familia = document.querySelector("#familia");
 
 function agregarFamiliares(n) {
     for (let i = 1; i <= n; i++) {
-        const form = document.querySelector("#familia");
         const label = document.createElement("label");
         const edadFamiliar = document.createTextNode(`Edad del familiar ${i}:`);
         const input = document.createElement("input");
@@ -22,39 +22,45 @@ function agregarFamiliares(n) {
         input.id = `edad-${i}`;
         const div = document.createElement("div");
         label.appendChild(edadFamiliar);
-        form.appendChild(label);
-        form.appendChild(input);
-        form.appendChild(div);
+        familia.appendChild(label);
+        familia.appendChild(input);
+        familia.appendChild(div);
 
     }
 }
 
-function menorEdad(edades) {
+agregarFamiliares(prompt("Cuantos miembros tiene la familia?"));
+
+function menorNodo(edades) {
     let menor = Number(edades[0].value);
     for (let el of edades) {
-        if (Number(el.value) < menor) {
+        if (Number(el.value) < menor && Number(el.value) > 0) {
             menor = Number(el.value);
         }
     }
     return menor;
 }
 
-function mayorEdad(edades) {
-    let mayor = Number(edades[0].value);
-    for (let el of edades) {
-        if (Number(el.value) > mayor) {
+function mayorNodo(nodo) {
+    let mayor = Number(nodo[0].value);
+    for (let el of nodo) {
+        if (Number(el.value) > mayor && Number(el.value) > 0) {
             mayor = Number(el.value);
         }
     }
     return mayor;
 }
 
-function promedioEdad(edades) {
+function promedioNodo(nodo) {
     let promedio = 0;
-    for (let el of edades) {
-        promedio += Number(el.value);
+    n = 0;
+    for (let el of nodo) {
+        if (Number(el.value) > 0) {
+            promedio += Number(el.value);
+            n++;
+        }
     }
-    return promedio / edades.length;
+    return promedio / n;
 }
 
 function agregarALista(lista, texto) {
@@ -64,21 +70,23 @@ function agregarALista(lista, texto) {
     lista.appendChild(div);
 }
 
-agregarFamiliares(cantidadFamiliares);
-
-$calcular.onclick = function () {
+$calcularEdades.onclick = function () {
     const edades = document.querySelectorAll(".edad");
-    agregarALista(infoEdades, `La menor edad es ${menorEdad(edades)}`);
-    agregarALista(infoEdades, `La mayor edad es ${mayorEdad(edades)}`);
-    agregarALista(infoEdades, `La edad promedio es ${promedioEdad(edades)}`);
+    agregarALista(infoEdades, `La menor edad es ${menorNodo(edades)}`);
+    agregarALista(infoEdades, `La mayor edad es ${mayorNodo(edades)}`);
+    agregarALista(infoEdades, `La edad promedio es ${promedioNodo(edades)}`);
     return false;
 }
 
 $resetear.onclick = function () {
-    document.getElementById("familia").reset(); 
+    document.getElementById("familia").reset();
     while (infoEdades.hasChildNodes()) {
         infoEdades.removeChild(infoEdades.childNodes[0]);
     }
+    while (familia.hasChildNodes()) {
+        familia.removeChild(familia.childNodes[0]);
+    }
+    agregarFamiliares(prompt("Cuantos miembros tiene la familia?"))
     return false;
 }
 
@@ -89,3 +97,49 @@ Al hacer click en "calcular", mostrar en un elemento pre-existente el mayor sala
 
 Punto bonus: si hay inputs vacíos, ignorarlos en el cálculo (no contarlos como 0).
 */
+
+
+const infoSueldos = document.querySelector("#info-sueldos");
+const sueldos = document.querySelector("#sueldos");
+const $agregarSueldo = document.querySelector("#agregar-sueldo");
+const $quitarSueldo = document.querySelector("#quitar-sueldo");
+const $calcularSueldos = document.querySelector("#calcular-sueldos");
+
+function agregarSueldos() {
+    let contadorSueldos = (sueldos.childNodes.length - 1) / 3;
+    const label = document.createElement("label");
+    const sueldoFamiliar = document.createTextNode(`Sueldo anual del familiar ${contadorSueldos + 1}:`);
+    const input = document.createElement("input");
+    input.type = "number";
+    input.classList.add("sueldo");
+    input.id = `sueldo-${contadorSueldos + 1}`;
+    const div = document.createElement("div");
+    label.appendChild(sueldoFamiliar);
+    sueldos.appendChild(label);
+    sueldos.appendChild(input);
+    sueldos.appendChild(div);
+}
+
+$agregarSueldo.onclick = function () {
+    agregarSueldos()
+    return false;
+}
+
+$quitarSueldo.onclick = function () {
+    for (let i = 0; i < 3; i++) {
+        sueldos.removeChild(sueldos.lastChild);
+    }
+    return false;
+}
+
+$calcularSueldos.onclick = function () {
+    while (infoSueldos.hasChildNodes()) {
+        infoSueldos.removeChild(infoSueldos.childNodes[0]);
+    }
+    const sueldos = document.querySelectorAll(".sueldo");
+    agregarALista(infoSueldos, `El menor sueldo anual es $${menorNodo(sueldos)}`);
+    agregarALista(infoSueldos, `El mayor sueldo anual es $${mayorNodo(sueldos)}`);
+    agregarALista(infoSueldos, `El sueldo anual promedio es $${promedioNodo(sueldos)}`);
+    agregarALista(infoSueldos, `El sueldo mensual promedio es $${promedioNodo(sueldos) / 12}`);
+    return false;
+}
