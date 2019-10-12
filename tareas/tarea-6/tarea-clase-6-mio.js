@@ -34,7 +34,7 @@ agregarFamiliares(prompt("Cuantos miembros tiene la familia?"));
 function menorNodo(edades) {
     let menor = Number(edades[0].value);
     for (let el of edades) {
-        if (Number(el.value) < menor && Number(el.value) > 0) {
+        if (Number(el.value) < menor) {
             menor = Number(el.value);
         }
     }
@@ -44,7 +44,7 @@ function menorNodo(edades) {
 function mayorNodo(nodo) {
     let mayor = Number(nodo[0].value);
     for (let el of nodo) {
-        if (Number(el.value) > mayor && Number(el.value) > 0) {
+        if (Number(el.value) > mayor) {
             mayor = Number(el.value);
         }
     }
@@ -53,14 +53,10 @@ function mayorNodo(nodo) {
 
 function promedioNodo(nodo) {
     let promedio = 0;
-    n = 0;
     for (let el of nodo) {
-        if (Number(el.value) > 0) {
-            promedio += Number(el.value);
-            n++;
-        }
+        promedio += Number(el.value);
     }
-    return promedio / n;
+    return promedio / nodo.length;
 }
 
 function agregarALista(lista, texto) {
@@ -137,9 +133,15 @@ $calcularSueldos.onclick = function () {
         infoSueldos.removeChild(infoSueldos.childNodes[0]);
     }
     const sueldos = document.querySelectorAll(".sueldo");
-    agregarALista(infoSueldos, `El menor sueldo anual es $${menorNodo(sueldos)}`);
-    agregarALista(infoSueldos, `El mayor sueldo anual es $${mayorNodo(sueldos)}`);
-    agregarALista(infoSueldos, `El sueldo anual promedio es $${promedioNodo(sueldos)}`);
-    agregarALista(infoSueldos, `El sueldo mensual promedio es $${promedioNodo(sueldos) / 12}`);
+    let sueldosFiltrados = [];
+    for (let i = 0; i < sueldos.length; i++) {
+        if (sueldos[i].value !== "") {
+            sueldosFiltrados.push(sueldos[i]);
+        }
+    }
+    agregarALista(infoSueldos, `El menor sueldo anual es $${menorNodo(sueldosFiltrados)}`);
+    agregarALista(infoSueldos, `El mayor sueldo anual es $${mayorNodo(sueldosFiltrados)}`);
+    agregarALista(infoSueldos, `El sueldo anual promedio es $${promedioNodo(sueldosFiltrados)}`);
+    agregarALista(infoSueldos, `El sueldo mensual promedio es $${promedioNodo(sueldosFiltrados) / 12}`);
     return false;
 }
