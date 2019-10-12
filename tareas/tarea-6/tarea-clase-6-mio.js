@@ -6,7 +6,6 @@ Al hacer click en "calcular", mostrar en un elemento pre-existente la mayor edad
 Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuevamente, borrando los inputs ya creados (investigar cómo en MDN).
 */
 
-
 const $calcularEdades = document.querySelector("#calcular-edades");
 const infoEdades = document.querySelector("#info-edades");
 const $resetear = document.querySelector("#resetear");
@@ -116,6 +115,16 @@ function agregarSueldos() {
     sueldos.appendChild(div);
 }
 
+function filtrarInputsVacios(nodo) {
+    let filtrados = [];
+    for (let i = 0; i < nodo.length; i++) {
+        if (nodo[i].value !== "") {
+            filtrados.push(nodo[i]);
+        }
+    }
+    return filtrados;
+}
+
 $agregarSueldo.onclick = function () {
     agregarSueldos()
     return false;
@@ -133,12 +142,7 @@ $calcularSueldos.onclick = function () {
         infoSueldos.removeChild(infoSueldos.childNodes[0]);
     }
     const sueldos = document.querySelectorAll(".sueldo");
-    let sueldosFiltrados = [];
-    for (let i = 0; i < sueldos.length; i++) {
-        if (sueldos[i].value !== "") {
-            sueldosFiltrados.push(sueldos[i]);
-        }
-    }
+    const sueldosFiltrados = filtrarInputsVacios(sueldos);
     agregarALista(infoSueldos, `El menor sueldo anual es $${menorNodo(sueldosFiltrados)}`);
     agregarALista(infoSueldos, `El mayor sueldo anual es $${mayorNodo(sueldosFiltrados)}`);
     agregarALista(infoSueldos, `El sueldo anual promedio es $${promedioNodo(sueldosFiltrados)}`);
