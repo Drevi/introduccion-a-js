@@ -1,0 +1,26 @@
+{
+  "name": "introduccion-a-js",
+  "version": "1.0.0",
+  "description": "Curso argentinaprograma",
+  "main": "readme.md",
+  "directories": {
+    "doc": "doc"
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Drevi/introduccion-a-js.git"
+  },
+  "author": "Drevi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Drevi/introduccion-a-js/issues"
+  },
+  "homepage": "https://github.com/Drevi/introduccion-a-js#readme"
+}
